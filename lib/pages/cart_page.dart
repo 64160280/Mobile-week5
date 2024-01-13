@@ -1,37 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:week04/ColorTheme/color.dart';
 import 'package:week04/components/button.dart';
 import 'package:week04/pages/food.dart';
 import 'package:week04/pages/shop.dart';
+import 'package:week04/pages/cart_bloc.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({Key? key}) : super(key: key);
 
-  void removeFromCart(Food food, BuildContext context) {
-    final shop = context.read<Shop>();
-    shop.removeFromCart(food);
-  }
-
   @override
   Widget build(BuildContext context) {
-    final shop = context.read<Shop>();
-    
-    return Consumer<Shop>(
-      builder: (context, value, child) => Scaffold(
-        backgroundColor: primaryColor,
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text(
-            "My Cart",
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
+     final shop = context.read<Shop>();
+
+    return BlocProvider(
+      create: (context) => CartBloc(shop),
+      child: _CartPageContent(),
+    );
+  }
+}
+
+class _CartPageContent extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CartBloc, CartState>(
+      builder: (context, state) {
+        final shop = context.read<Shop>();
+        return Scaffold(
           backgroundColor: primaryColor,
-        ),
-        body: Column(
-          children: [
+          appBar: AppBar(
+            centerTitle: true,
+            title: const Text(
+              "My Cart",
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            backgroundColor: primaryColor,
+          ),
+          body: Column(
+            children: [
             Expanded(
               child: ListView.builder(
                 itemCount: shop.cart.length,
@@ -65,38 +74,41 @@ class CartPage extends StatelessWidget {
                           Icons.delete,
                           color: Colors.white,
                         ),
-                        onPressed: () => removeFromCart(food, context),
+                          onPressed: () {
+                            context.read<CartBloc>().add(RemoveFromCartEvent(food));
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: Column(
+                  children: [
+                    Text(
+                      "Total: \$${shop.calculateTotalPrice()}",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
                     ),
-                  );
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: Column(
-                children: [
-                  Text(
-                    "Total: \$${shop.calculateTotalPrice()}",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                    SizedBox(height: 20),
+                    MyButton(
+                      onTap: () {
+                        // Handle the payment logic
+                      },
+                      text: "Pay Now \$${shop.summaryPrice.toString()}",
                     ),
-                  ),
-                  SizedBox(height: 20),
-                  MyButton(
-                    onTap: () {
-                      // Handle the payment logic
-                    },
-                    text: "Pay Now \$${shop.summaryPrice.toString()}",
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
