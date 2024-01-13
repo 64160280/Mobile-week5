@@ -29,7 +29,6 @@ class Shop extends ChangeNotifier{
   void addToCart(Food foodItem, int quantity){
     for (int loop = 0; loop < quantity; loop++){
       _cart.add(foodItem);
-
     }
     notifyListeners();
   }
