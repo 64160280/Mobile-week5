@@ -5,6 +5,7 @@ import 'package:week04/pages/shop.dart';
 import './pages/intro_pages.dart';
 import 'pages/menu_pages.dart';
 
+
 void main(){
   runApp(ChangeNotifierProvider(create: (context) => Shop(),
   child: const MyApp(),));

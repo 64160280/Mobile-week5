@@ -18,7 +18,7 @@ class IntroPage extends StatelessWidget {
             const SizedBox(height: 25),
             // Shop name
             Text(
-              "SUSHI MAN",
+              "FOOD PETS",
               style: GoogleFonts.dmSerifDisplay(
                 fontSize: 28,
                 color: Colors.white,
@@ -28,13 +28,13 @@ class IntroPage extends StatelessWidget {
             //---------------------------------
             // icon
             Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Image.asset('lib/images/sushi.png'),
+              padding: const EdgeInsets.all(30.0),
+              child: Image.asset('lib/images/pet-food.png'),
             ),
             const SizedBox(height: 25),
 
             // title
-            Text("THE TASTE OF JAPANESE FOOD",
+            Text("THE TASTE OF PETS FOOD",
                 style: GoogleFonts.dmSerifDisplay(
                   fontSize: 44,
                   color: Colors.white,
@@ -43,7 +43,7 @@ class IntroPage extends StatelessWidget {
 
             // Subtitle
             Text(
-              "Feel the taste of the most popular Japanese food from anywhere and anytime",
+              "Feel the taste of the most popular pets food from anywhere and anytime",
               style: TextStyle(
                 color: Colors.grey[300],
                 height: 2,
